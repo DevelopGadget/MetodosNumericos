@@ -1,0 +1,39 @@
+<div class="container">
+        <div class="col s5">
+              <div class="card-content">
+                  <form #empleadoForm="ngForm" (ngSubmit)="calcular(empleadoForm)">
+                    <div class="row">
+                        <div class="card-action">
+                            <div class="input-field col s12">
+                                <button class="btn right"  style="margin-left: 2px">Calcular</button>
+                            </div>
+                        </div>
+                    </div>
+                  </form>
+              </div>
+        </div>
+
+        <div class="col s7">
+            <table>
+                <thead>
+                    <th>index</th>
+                    <th>h<sub>i</sub></th>
+                    <th>f(h<sub>i</sub>)</th>
+                    <th>f'(h<sub>i</sub>)</th>
+                    <th>h<sub>i</sub>+1</th>
+                    <th>h<sub>i+1</sub> - h<sub>i</sub><th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let values of ListValue; let index = index">
+                        <td>{{ index + 1}}</td>
+                        <td>{{ values.x }}</td>
+                        <td>{{ values.method }}</td>
+                        <td>{{ values.derivada }}</td>
+                        <td>{{ values.value }}</td>
+                        <td>{{ values.valueOld }}</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+</div>

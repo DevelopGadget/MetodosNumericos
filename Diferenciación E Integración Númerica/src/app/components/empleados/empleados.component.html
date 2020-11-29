@@ -1,0 +1,126 @@
+<br>
+<div class="container">
+  <form [formGroup]="formModel">
+
+    <div class="row ">
+      <div class="col-md-4">
+        <div class="card" style="padding: 15px;">
+          <div class="card-body">
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Temperatura 1</label>
+              <input type="number" class="form-control" formControlName="temperatura1" id="exampleFormControlInput1"
+                placeholder="Temperatura 1">
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Temperatura 2</label>
+              <input type="number" class="form-control" formControlName="temperatura2" id="exampleFormControlInput1"
+                placeholder="Temperatura 2">
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Numero de teraciones</label>
+              <input type="number" class="form-control" formControlName="numIteraciones" id="exampleFormControlInput1"
+                placeholder="Numero de teraciones">
+            </div>
+            <div class="form-group" >
+              <label for="exampleFormControlInput1">Mol</label>
+              <input type="number" class="form-control" formControlName="mol" id="exampleFormControlInput1"
+                placeholder="Mol">
+            </div>
+
+          </div>
+          <br>
+          <button type="button" (click)="crear(false)" class="btn btn-primary">Integración Númerica</button>
+          <br>
+          <button type="button" (click)="crear(true)" class="btn btn-primary">Derivida Númerica</button>
+        </div>
+        <br>
+        <div *ngIf="isCalc && !isDerivada" class="card" style="width: 18rem;" >
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">El resultado de la integral es: {{resultado}}</li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="col-md-8" *ngIf="!isDerivada">
+
+        <button type="button" (click)="calcularIntegral()" class="btn btn-primary">calcular</button>
+        <div style="padding-bottom: 15px;"></div>
+        <button type="button" (click)="valoresDefault()" class="btn btn-primary">Valores por defecto</button>
+        <div style="padding-bottom: 15px;"></div>
+
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Temperatura C°</th>
+              <th scope="col">Cp (J/mol*K)</th>
+              <th scope="col" *ngIf="isCalc">Area bajo la curva</th>
+              <th scope="col" *ngIf="isCalc">Acumulado Bajo La Curva</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="functionsCP">
+            <tr *ngFor="let item of functionsCpGet.controls; index as iControl">
+              <td>
+                {{iControl + 1}}
+              </td>
+              <td>
+                {{tableT[iControl]}}
+              </td>
+              <td [formGroupName]="iControl">
+                <div class="form-group">
+                  <label for="CP">Valor CP</label>
+                  <input type="number" class="form-control" formControlName="functionCP" id="Cp" placeholder="Valor CP">
+                </div>
+              </td>
+              <td *ngIf="isCalc">
+                {{areaBajoLacurva(iControl)}}
+              </td>
+              <td *ngIf="isCalc">
+                {{acumuladoCurva(iControl)}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-md-8" *ngIf="isDerivada">
+
+          <button type="button" (click)="isCalc = true" class="btn btn-primary">calcular</button>
+          <div style="padding-bottom: 15px;"></div>
+          <button type="button" (click)="valoresDefault()" class="btn btn-primary">Valores por defecto</button>
+          <div style="padding-bottom: 15px;"></div>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Temperatura C°</th>
+              <th scope="col">H (Kj/mol)</th>
+              <th scope="col" *ngIf="isCalc">Cp (Kj/mol*K)</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="functionsCP">
+            <tr *ngFor="let item of functionsCpGet.controls; index as iControl">
+              <td>
+                {{iControl + 1}}
+              </td>
+              <td>
+                {{tableT[iControl]}}
+              </td>
+              <td [formGroupName]="iControl">
+                <div class="form-group">
+                  <label for="CP">Valor H</label>
+                  <input type="number" class="form-control" formControlName="functionCP" id="Cp" placeholder="Valor H">
+                </div>
+              </td>
+              <td *ngIf="isCalc && iControl < functionsCpGet.controls.length - 1">
+                {{derivadaNumerica(iControl)}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </form>
+</div>
